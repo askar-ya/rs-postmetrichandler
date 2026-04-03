@@ -190,7 +190,7 @@ class DbRequest:
             f"left join reels_transcriptions rt on rt.reel_code = rp.reel_code "
             f"where rp.reel_code = '{reel_code}' "
         )
-        return self.cursor.fetchall()[0]
+        return self.cursor.fetchall()
 
 
 class S3Client:

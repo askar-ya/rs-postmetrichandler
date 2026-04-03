@@ -91,7 +91,7 @@ def main():
                 parms = psql.get_annotation(reel)
 
                 for n, par in enumerate(parms):
-                    text.replace(f'$%{n}%$', par)
+                    text.replace(f'$%{n}%$', par[0])
                 log(text[:200])
 
                 embedding = make_embedding(text)
