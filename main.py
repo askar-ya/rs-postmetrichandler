@@ -17,7 +17,7 @@ def main():
             reel = psql.get_reel_for_processing()
             log(f"Reel {reel} 🎯")
             reel_state = psql.get_state_reel(reel)
-            print(f"Начнем с {reel_state} 🚗")
+            log(f"Начнем с {reel_state} 🚗")
 
             if reel_state == 'transcription':
                 status_save = save_video(reel)
