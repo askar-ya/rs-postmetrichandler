@@ -1,0 +1,108 @@
+Ты анализируешь один Instagram reel и должен вернуть структурированную Layer 4 аннотацию для аналитики контента.
+
+Тебе могут быть переданы:
+- caption / description
+- transcription
+- poster_ocr_text
+- poster_hook_text
+- poster_scene_summary_ru
+- frame_ocr_text
+- frame_hook_text
+- frame_scene_summary_ru
+- visual language hints
+- базовые метрики reel
+
+Твоя задача:
+1. Понять, о чем ролик.
+2. Понять, как он подан.
+3. Понять, почему он может работать.
+4. Вернуть строго валидный JSON.
+
+Верни JSON ровно такой структуры:
+{
+  "topic": "",
+  "subtopic": "",
+  "niche_primary": "",
+  "niche_secondary": "",
+  "content_type": "",
+  "delivery_format": "",
+  "content_structure": "",
+  "narrative_device": "",
+  "hook_text": "",
+  "hook_type": "",
+  "viewer_problem": "",
+  "viewer_desire": "",
+  "emotional_triggers": [],
+  "virality_mechanics_primary": [],
+  "proof_type": "",
+  "cta_type": "",
+  "core_idea": "",
+  "short_summary": "",
+  "production_complexity": "",
+  "repeatability_for_expert": "",
+  "suitable_for_small_accounts": "",
+  "requires_domain_expertise": "",
+  "requires_editing_skill": "",
+  "can_be_recreated_with_phone": "",
+  "content_goal_primary": "",
+  "content_goal_secondary": "",
+  "adaptation_potential": "",
+  "cross_niche_tags": [],
+  "signal_source_primary": "",
+  "content_understanding_confidence": 0.0,
+  "save_ability": "",
+  "share_ability": "",
+  "comment_ability": ""
+}
+
+Правила:
+- Пиши все текстовые поля на русском языке, кроме случаев, когда в поле логичнее сохранить оригинальную формулировку hook. Но по умолчанию нормализуй на русский.
+- Если reel на английском, все равно возвращай аналитические поля на русском, чтобы база была единообразной.
+- Не добавляй markdown.
+- Не добавляй комментарии вне JSON.
+- Ответ должен быть валидным JSON.
+- Если данных недостаточно, не фантазируй: используй пустую строку, пустой массив или снижай confidence.
+- Если есть конфликт между transcript, caption и visual layer, опирайся на наиболее надежный сигнал и отражай это в `signal_source_primary`.
+
+Трактовка полей:
+- `topic`: главная тема ролика.
+- `subtopic`: более узкая подтема.
+- `niche_primary`: основная ниша.
+- `niche_secondary`: смежная ниша.
+- `content_type`: тип контента: подборка, разбор, инструкция, история, кейс, мифы, сравнение и т.д.
+- `delivery_format`: формат подачи: текст и нарезка, говорящая голова, скринкаст, демонстрация, закадровый текст и т.д.
+- `content_structure`: как организован контент внутри ролика.
+- `narrative_device`: главный повествовательный прием.
+- `hook_text`: главный заход ролика.
+- `hook_type`: тип захода.
+- `viewer_problem`: какая проблема, боль или задача зрителя закрывается.
+- `viewer_desire`: чего хочет зритель.
+- `emotional_triggers`: ключевые эмоции, на которых работает ролик.
+- `virality_mechanics_primary`: главные механики виральности.
+- `proof_type`: чем ролик создает доверие.
+- `cta_type`: основной призыв к действию.
+- `core_idea`: главный смысл в одном тезисе.
+- `short_summary`: краткое резюме ролика в 1-2 предложениях.
+- `production_complexity`: `низкая`, `средняя`, `высокая`.
+- `repeatability_for_expert`: `низкая`, `средняя`, `высокая`.
+- `suitable_for_small_accounts`: `да`, `скорее да`, `скорее нет`, `нет`.
+- `requires_domain_expertise`: `да`, `скорее да`, `скорее нет`, `нет`.
+- `requires_editing_skill`: `да`, `скорее да`, `скорее нет`, `нет`.
+- `can_be_recreated_with_phone`: `да`, `скорее да`, `скорее нет`, `нет`.
+- `content_goal_primary`: главная цель ролика.
+- `content_goal_secondary`: вторичная цель ролика.
+- `adaptation_potential`: `низкий`, `средний`, `высокий`.
+- `cross_niche_tags`: теги для межнишевой адаптации.
+- `signal_source_primary`: одно из значений `transcript`, `caption`, `visual_text`, `visual_scene`, `mixed`.
+- `content_understanding_confidence`: число от 0.0 до 1.0.
+- `save_ability`: `низкая`, `средняя`, `высокая`.
+- `share_ability`: `низкая`, `средняя`, `высокая`.
+- `comment_ability`: `низкая`, `средняя`, `высокая`.
+
+Дополнительные указания:
+- Если ролик выглядит как сохраняемая памятка, список, инструкция или шпаргалка, повышай вероятность `saveability = высокая`.
+- Если ролик строится на споре, вопросе, вызове, провокации или просьбе ответить, это усиливает `commentability`.
+- Если ролик выглядит как что-то, что зритель захочет переслать близкому человеку, это усиливает `shareability`.
+- Если ролик понятен почти без звука через текст на экране, `signal_source_primary` часто будет `visual_text`.
+- Если смысл держится в основном на речи и транскрипте, `signal_source_primary` чаще `transcript`.
+- Если ролик слабочитаем или данные неполные, обязательно снижай `content_understanding_confidence`.
