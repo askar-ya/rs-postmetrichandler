@@ -6,7 +6,7 @@ import requests
 
 
 def make_ocr(reel_code):
-    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.181:8000', timeout=100000)
+    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.106:8000', timeout=100000)
     client = OpenAI(api_key=SETTINGS['OPEN_AI_TOKEN'], http_client=http_client)
 
     # Пути к вашим изображениям
@@ -16,6 +16,8 @@ def make_ocr(reel_code):
     ocr_prot = ''
     with open(SETTINGS['WORK_DIR'] + 'llm/ocr_promt', 'r') as f:
         ocr_prot = f.read()
+
+
 
     # Отправляем запрос с двумя изображениями
     response = client.chat.completions.create(
@@ -62,7 +64,7 @@ def make_annotation(**kwargs):
         anno_prot += f' {name}: {str(kwargs[name])}\n'
 
 
-    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.181:8000')
+    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.106:8000')
     client = OpenAI(api_key=SETTINGS['OPEN_AI_TOKEN'], http_client=http_client)
 
     response = client.chat.completions.create(
