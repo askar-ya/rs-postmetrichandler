@@ -88,11 +88,10 @@ def main():
                 with open('llm/embedding', 'r') as f:
                     text = f.read()
 
-                parms = psql.get_annotation(reel)
+                parms = psql.get_annotation(reel)[0]
 
                 for n, par in enumerate(parms):
-                    text.replace(f'$%{n}%$', par[0])
-                log(text[:200])
+                    text = text.replace(f'$%{n}%$', par)
 
                 embedding = make_embedding(text)
                 log('Получил EMBEDDING ↗️')
