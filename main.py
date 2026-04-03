@@ -74,6 +74,7 @@ def main():
                 reel_state = 'embedding'
 
             if reel_state == 'embedding':
+
                 with open('llm/embedding', 'r') as f:
                     text = f.read()
 
@@ -83,7 +84,9 @@ def main():
                     text.replace(f'$%{n}%$', par)
 
                 embedding = make_embedding(text)
+                log('Получил EMBEDDING ↗️')
                 psql.save_embedding(embedding, reel)
+                log('Сохранил EMBEDDING ✍️')
 
             psql.close()
         else:
