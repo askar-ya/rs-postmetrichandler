@@ -92,6 +92,7 @@ def main():
 
                 for n, par in enumerate(parms):
                     text.replace(f'$%{n}%$', par)
+                log(text[:200])
 
                 embedding = make_embedding(text)
                 log('Получил EMBEDDING ↗️')
