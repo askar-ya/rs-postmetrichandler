@@ -154,8 +154,14 @@ class DbRequest:
         self.cursor.execute(q)
 
     def save_reel_ocr(self, reel_code: str, data: dict):
-        q = f"INSERT INTO reels_frames_data (reel_code, data) values ('{reel_code}', '{json.dumps(data)}')"
-        self.cursor.execute(q)
+        json_data = json.dumps(data, ensure_ascii=False)
+        q = """
+            INSERT INTO reels_frames_data (reel_code, data)
+            VALUES (%s, %s::jsonb)
+            ON CONFLICT (reel_code) DO UPDATE
+                SET data = EXCLUDED.data
+        """
+        self.cursor.execute(q, (reel_code, json_data))
 
     def save_reel_annotation(self, data: dict):
         rwas = ', '.join(list(data))
