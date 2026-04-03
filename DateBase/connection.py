@@ -173,7 +173,7 @@ class DbRequest:
                 if type(data[par]) == int:
                     values.append(f"{data[par]}")
                 else:
-                    values.append(f"'{data[par]}'")
+                    values.append(f"'$${data[par]}$$")
 
         q = f"INSERT INTO reels_post_metrics ({rwas}) values ( {', '.join(values)})"
         self.cursor.execute(q)
