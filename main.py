@@ -7,7 +7,7 @@ from DateBase.utils import upload_file_to_s3
 from Transcription.utils import load_model, transcription_worker, transcription, save_video, mp4_to_wav, get_length, download_first_frame
 from llm.utils import make_ocr, make_annotation, make_embedding
 
-from conf import log
+from conf import log, empty_annotation
 
 def main():
     while True:
@@ -40,15 +40,18 @@ def main():
                         log("скачивание кадра первой секунды 🖼️")
                         upload_file_to_s3(reel+'.jpg')
                         log("Кадр загружен ан S3 💿")
-                        os.remove(reel+'.mp4')
-                        os.remove(reel + '.jpg')
-                        os.remove(reel + '.wav')
+
 
                         reel_state = 'frames_data'
 
             if reel_state == 'transcription':
                 psql.save_reel_text(reel, 'error_save')
                 psql.save_reel_ocr(reel, {})
+                annotation = empty_annotation
+                annotation['reel_code'] = reel
+                psql.save_reel_annotation(annotation)
+                psql.save_embedding([0 for i in range(1536)], reel)
+
 
             if reel_state == 'frames_data':
                 data = make_ocr(reel)
@@ -56,6 +59,13 @@ def main():
                 psql.save_reel_ocr(reel, data)
                 log('Данные о кадрах записаны в бд 🖼️✍️')
                 reel_state = 'annotation'
+
+                if os.path.exists(reel + '.mp4'):
+                    os.remove(reel + '.mp4')
+                if os.path.exists(reel + '.jpg'):
+                    os.remove(reel + '.jpg')
+                if os.path.exists(reel + '.wav'):
+                    os.remove(reel + '.wav')
 
             if reel_state == 'annotation':
                 views, likes, comments, description, trans, first_frame = psql.get_reel_metrics(reel)

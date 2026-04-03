@@ -6,7 +6,7 @@ import requests
 
 
 def make_ocr(reel_code):
-    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.181:8000')
+    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.181:8000', timeout=100000)
     client = OpenAI(api_key=SETTINGS['OPEN_AI_TOKEN'], http_client=http_client)
 
     # Пути к вашим изображениям

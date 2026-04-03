@@ -37,3 +37,42 @@ def log(*kwargs):
     print(out)
 
 SETTINGS = get_settings()
+
+empty_annotation = {
+  "topic": "",
+  "subtopic": "",
+  "niche_primary": "",
+  "niche_secondary": "",
+  "content_type": "",
+  "delivery_format": "",
+  "content_structure": "",
+  "narrative_device": "",
+  "hook_text": "",
+  "hook_type": "",
+  "viewer_problem": "",
+  "viewer_desire": "",
+  "emotional_triggers": [],
+  "virality_mechanics_primary": [],
+  "proof_type": "",
+  "cta_type": "",
+  "core_idea": "",
+  "short_summary": "",
+  "production_complexity": "",
+  "repeatability_for_expert": "",
+  "suitable_for_small_accounts": "",
+  "requires_domain_expertise": "",
+  "requires_editing_skill": "",
+  "can_be_recreated_with_phone": "",
+  "content_goal_primary": "",
+  "content_goal_secondary": "",
+  "adaptation_potential": "",
+  "cross_niche_tags": [],
+  "signal_source_primary": "",
+  "content_understanding_confidence": 0.0,
+  "save_ability": "",
+  "share_ability": "",
+  "comment_ability": "",
+  "model": "gpt-4o",
+  "prompt_version": 1,
+  "schema_version": 1
+}
