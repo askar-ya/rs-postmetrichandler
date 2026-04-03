@@ -174,7 +174,7 @@ class DbRequest:
 
 
     def save_embedding(self, embedding: list[float], reel_code: str):
-        self.cursor.execute(f"INSERT INTO reels_embeddings (reel_code, embedding) VALUES ({reel_code}, '{embedding}')")
+        self.cursor.execute(f"INSERT INTO reels_embeddings (reel_code, embedding) VALUES ('{reel_code}', '{embedding}')")
 
     def get_annotation(self, reel_code: str):
         self.cursor.execute(
