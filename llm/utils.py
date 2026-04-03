@@ -1,3 +1,4 @@
+import httpx
 from openai import OpenAI
 from conf import SETTINGS, log
 import json
@@ -5,7 +6,8 @@ import requests
 
 
 def make_ocr(reel_code):
-    client = OpenAI(api_key=SETTINGS['OPEN_AI_TOKEN'])
+    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.181:8000')
+    client = OpenAI(api_key=SETTINGS['OPEN_AI_TOKEN'], http_client=http_client)
 
     # Пути к вашим изображениям
     cover = f"{SETTINGS['S3_BASE_URL']}/poster/{reel_code}.jpg"
@@ -59,7 +61,10 @@ def make_annotation(**kwargs):
     for name in kwargs:
         anno_prot += f' {name}: {str(kwargs[name])}\n'
 
-    client = OpenAI(api_key=SETTINGS['OPEN_AI_TOKEN'])
+
+    http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.181:8000')
+    client = OpenAI(api_key=SETTINGS['OPEN_AI_TOKEN'], http_client=http_client)
+
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
