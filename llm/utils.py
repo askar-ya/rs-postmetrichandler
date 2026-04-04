@@ -3,7 +3,7 @@ from openai import OpenAI
 from conf import SETTINGS, log
 import json
 import requests
-
+import base64
 
 def make_ocr(reel_code):
     http_client = httpx.Client(proxy='http://8yqqpm:5UVBUx@68.209.61.106:8000', timeout=100000)
@@ -17,7 +17,23 @@ def make_ocr(reel_code):
     with open(SETTINGS['WORK_DIR'] + 'llm/ocr_promt', 'r') as f:
         ocr_prot = f.read()
 
+    response = requests.get(cover, stream=True)
+    with open(SETTINGS['WORK_DIR'] + 'cover.jpg', 'wb') as file:
+        for chunk in response.iter_content(1024):
+            file.write(chunk)
 
+    response = requests.get(frame, stream=True)
+    with open(SETTINGS['WORK_DIR'] + 'frame.jpg', 'wb') as file:
+        for chunk in response.iter_content(1024):
+            file.write(chunk)
+
+    def encode_image(image_path):
+        """Кодирует изображение в Base64."""
+        with open(SETTINGS['WORK_DIR'] + image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode('utf-8')
+
+    cover = encode_image(SETTINGS['WORK_DIR'] + 'cover.jpg')
+    frame = encode_image(SETTINGS['WORK_DIR'] + 'frame.jpg')
 
     # Отправляем запрос с двумя изображениями
     response = client.chat.completions.create(
@@ -30,13 +46,13 @@ def make_ocr(reel_code):
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": cover
+                            "url": f"data:image/jpeg;base64,{cover}"
                         }
                     },
                     {
                         "type": "image_url",
                         "image_url": {
-                            "url": frame
+                            "url": f"data:image/jpeg;base64,{frame}"
                         }
                     }
                 ]
