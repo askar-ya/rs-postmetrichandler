@@ -32,8 +32,8 @@ def make_ocr(reel_code):
         with open(SETTINGS['WORK_DIR'] + image_path, "rb") as image_file:
             return base64.b64encode(image_file.read()).decode('utf-8')
 
-    cover = encode_image(SETTINGS['WORK_DIR'] + 'cover.jpg')
-    frame = encode_image(SETTINGS['WORK_DIR'] + 'frame.jpg')
+    cover = encode_image('cover.jpg')
+    frame = encode_image('frame.jpg')
 
     # Отправляем запрос с двумя изображениями
     response = client.chat.completions.create(
